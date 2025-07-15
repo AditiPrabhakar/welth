@@ -33,3 +33,28 @@ Just copy the environmental variables from ORMs after creating the project then 
     npx inngest-cli@latest dev
 
 * "use client" pages(client component) in components are dyanamic and pages.jsx(server component) using them are static.
+
+6. DataBase Integeration (Prisma)
+> npm i -D prisma --legacy-peer-deps
+> npx prisma init
+
+This will create a prisma.schema file. In this file, we have to put our env variables for direct_url & database_url. Then have to create models. model name-of-table then we list all the attributes
+
+- we list another table-name when we have to create a relation, for example,  for relation `Account`
+`user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)`
+Here, `onDelete: Cascade` means that it will delete all the accounts of the user if the user is deleted in the User table.
+
+- a choice is represented by creating an enum field, as:
+    ```enum AccountType {
+    CURRENT
+    SAVINGS
+    }```
+
+- for accounts table, if we want to access acounts of a particular user, indexing makes it much more easier. `@@index([userId])`
+
+- ? represents an optional field.
+
+* `npx prisma migrate dev --name create-models` syncs our SupaBase database with Prisma. This also creates a **migration** folder inside of prisma/ folder which converts into all raw SQL code.
+
+7. Create new file inside lib called prisma.js
+    globalThis.prisma: This global variable ensures that the Prisma client instance is reused across hot reloads during development. Without this, each time your application reloads, a new instance of the Prisma client would be created, potentially leading to connection issues.

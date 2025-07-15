@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main className="min-h-screen">{children}</main>
           {/* footer */}
-          <footer className="bg-blue-50 py-12">
+          <footer className="bg-blue-50">
             <div className="container mx-auto text-center text-gray-600">
               <p>© 2025 Welth. All rights reserved.</p>
             </div>
