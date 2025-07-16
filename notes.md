@@ -58,3 +58,31 @@ Here, `onDelete: Cascade` means that it will delete all the accounts of the user
 
 7. Create new file inside lib called prisma.js
     globalThis.prisma: This global variable ensures that the Prisma client instance is reused across hot reloads during development. Without this, each time your application reloads, a new instance of the Prisma client would be created, potentially leading to connection issues.
+
+* We can learn next.js at [nextjs.org](https://nextjs.org/)
+
+8. Main
+  Create a `(main)` folder inside of app folder, for now we need two routes -> dashboard & account (dynamic).
+  for **dashboard**, simply create -> `app/dashboard/page.jsx`
+  for **account**, create -> `app/dashboard/[id]/page.jsx`  --> [id] is for the dynamic route. (as id is not same everytime)
+
+9. Create a not-found page
+  To create a 404 page, we have to create a file inside of app/ named exactly as `not-found.jsx`.
+
+## Suspense
+`<Suspense>` tag is used to show loading in a better way. For this, we add `fallback` property and installed `npm i react-spinners --legacy-peer-deps` for it which has a lot of loaders. We used `<BarLoader/>` for this one.
+
+10. actions folder
+Here lies the backend of the pages. 
+
+* for `actions/dashboard.js` next.js does not support decimals so we have to convert back to the number. That's why we made `serializedTransaction()`. We use `revalidatePath("/dashboard")` to re-fetch the values of a page before returning.
+
+11. create-account-drawer.jsx
+We created an component "use client" to implement it in our dashboard when we have to create an account.
+
+* DashboardPage is going to have 3 parts/sections:
+    - Budget Progress
+    - Overview
+    - Accounts Grid
+
+  Installed `npm i react-hook-form zod @hookform/resolvers --legacy-peer-deps` to create a form in `create-account-drawer.jsx`.
