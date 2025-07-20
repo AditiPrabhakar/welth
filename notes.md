@@ -123,3 +123,7 @@ We created an component "use client" to implement it in our dashboard when we ha
 
 13. Creating `app/(main)/account/_components/transaction-table.jsx` for `account[id] page`
 
+* Created `data/categories.js` to store all the categories.
+
+* useMemo takes a callback function and a dependency array. It only runs / re-calculates if the values of dependency array have changed else it will cache the value whatever it was given.
+
