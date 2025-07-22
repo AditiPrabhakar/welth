@@ -126,4 +126,5 @@ We created an component "use client" to implement it in our dashboard when we ha
 * Created `data/categories.js` to store all the categories.
 
 * useMemo takes a callback function and a dependency array. It only runs / re-calculates if the values of dependency array have changed else it will cache the value whatever it was given.
+* `localeCompare` method returns a negative, positive, or zero value based on the lexicographical order of the strings.
 

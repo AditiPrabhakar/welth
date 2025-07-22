@@ -1,5 +1,6 @@
 "use client";
 
+import { bulkDeleteTransactions } from '@/actions/accounts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox'
@@ -9,10 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { categoryColors } from '@/data/categories';
+import useFetch from '@/hooks/use-fetch';
 import { format } from 'date-fns';
 import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Router, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { BarLoader } from 'react-spinners';
+import { toast } from 'sonner';
 
 const RECURRING_INTERVALS = {
     DAILY: "Daily",
@@ -54,6 +58,29 @@ export function TransactionTable({ transactions }) {
             result = result.filter((transaction) => transaction.type === typeFilter);
         }
 
+        // Handling sorting operations
+        result.sort((a, b) => {
+            let comparison = 0;
+
+            switch (sortConfig.field) {
+                case "date":
+                    comparison = new Date(a.date) - new Date(b.date);
+                    break;
+                case "amount":
+                    comparison = a.amount - b.amount;
+                    break;
+                case "category":
+                    comparison = a.category.localeCompare(b.category);
+                    break;
+            
+                default:
+                    comparison = 0;
+                    break;
+            }
+
+            return sortConfig.direction === "asc" ? comparison : -comparison;
+        })
+
         return result;
     }, [
         transactions,
@@ -88,10 +115,28 @@ export function TransactionTable({ transactions }) {
         )
     }
 
+      const {
+        loading: deleteLoading,
+        fn: deleteFn,
+        data: deleted,
+    } = useFetch(bulkDeleteTransactions);
 
-    const handleBulkDelete = () => {
+    const handleBulkDelete = async () => {
+        if (
+        !window.confirm(
+            `Are you sure you want to delete ${selectedIds.length} transactions?`
+        )
+        )
+        return;
+        
+        deleteFn(selectedIds);
+    };
 
-    }
+    useEffect(() => {
+        if (deleted && !deleteLoading) {
+        toast.error("Transactions deleted successfully");
+        }
+    }, [deleted, deleteLoading]);
 
     const handleClearFilters = () => {
         setSearchTerm("");
@@ -102,6 +147,9 @@ export function TransactionTable({ transactions }) {
 
   return ( 
     <div className='space-y-4'>
+      {deleteLoading && (
+        <BarLoader className='mt-4' width={"100%"} color='#9333ea' />
+      )}
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
@@ -139,7 +187,7 @@ export function TransactionTable({ transactions }) {
                 </Select>
 
                 {selectedIds.length > 0 && (
-                    <div>
+                    <div className="flex items-center gap-2">
                         <Button variant='destructive' size="sm" onClick={handleBulkDelete}>
                             <Trash className='h-4 w-4 mr-1' />
                             Delete Selected ({selectedIds.length})
@@ -263,7 +311,7 @@ export function TransactionTable({ transactions }) {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <DropdownMenuLabel
+                                                <DropdownMenuItem
                                                     onClick={() => {
                                                         router.push(
                                                             `/transaction/create?edit=${transaction.id}`
@@ -271,10 +319,10 @@ export function TransactionTable({ transactions }) {
                                                     }}
                                                 >
                                                     Edit
-                                                </DropdownMenuLabel>
+                                                </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem className='text-destructive'
-                                                    // onClick={() => deleteFn([transaction.id])}
+                                                    onClick={() => deleteFn([transaction.id])}
                                                 >
                                                     Delete
                                                 </DropdownMenuItem>
