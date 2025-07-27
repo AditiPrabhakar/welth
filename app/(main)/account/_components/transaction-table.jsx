@@ -12,11 +12,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { categoryColors } from '@/data/categories';
 import useFetch from '@/hooks/use-fetch';
 import { format } from 'date-fns';
-import { ChevronDown, ChevronUp, Clock, MoreHorizontal, RefreshCw, Router, Search, Trash, X } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, MoreHorizontal, RefreshCw, Router, Search, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react'
 import { BarLoader } from 'react-spinners';
 import { toast } from 'sonner';
+
+const ITEMS_PER_PAGE = 10;
 
 const RECURRING_INTERVALS = {
     DAILY: "Daily",
@@ -90,6 +92,17 @@ export function TransactionTable({ transactions }) {
         sortConfig,
     ])
 
+     // Pagination calculations
+    const totalPages = Math.ceil(
+        filteredAndSortedTransactions.length / ITEMS_PER_PAGE
+    );
+    const paginatedTransactions = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredAndSortedTransactions.slice(
+        startIndex,
+        startIndex + ITEMS_PER_PAGE
+        );
+    }, [filteredAndSortedTransactions, currentPage]);
  
     const handleSort = (field) => {
         setSortConfig(current => ({
@@ -108,14 +121,14 @@ export function TransactionTable({ transactions }) {
     }
 
     const handleSelectAll = () => {
-        setSelectedIds((current) => 
-            current.length == filteredAndSortedTransactions.length
+        setSelectedIds((current) =>
+        current.length === paginatedTransactions.length
             ? []
-            : filteredAndSortedTransactions.map((t) => t.id)
-        )
-    }
+            : paginatedTransactions.map((t) => t.id)
+        );
+    };
 
-      const {
+    const {
         loading: deleteLoading,
         fn: deleteFn,
         data: deleted,
@@ -123,9 +136,9 @@ export function TransactionTable({ transactions }) {
 
     const handleBulkDelete = async () => {
         if (
-        !window.confirm(
-            `Are you sure you want to delete ${selectedIds.length} transactions?`
-        )
+            !window.confirm(
+                `Are you sure you want to delete ${selectedIds.length} transactions?`
+            )
         )
         return;
         
@@ -144,6 +157,11 @@ export function TransactionTable({ transactions }) {
         setRecurringFilter("");
         setSelectedIds([]);
     }
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+        setSelectedIds([]); // Clear selections on page change
+    };
 
   return ( 
     <div className='space-y-4'>
@@ -176,6 +194,14 @@ export function TransactionTable({ transactions }) {
                 </SelectContent>
                 </Select>
 
+                <Select
+                    value={recurringFilter}
+                    onValueChange={(value) => {
+                    setRecurringFilter(value);
+                    setCurrentPage(1);
+                    }}
+                ></Select>
+
                 <Select value={recurringFilter} onValueChange={(value) => setRecurringFilter(value)}>
                 <SelectTrigger className='w-[140px]'>
                     <SelectValue placeholder="All Transactions" />
@@ -189,7 +215,7 @@ export function TransactionTable({ transactions }) {
                 {selectedIds.length > 0 && (
                     <div className="flex items-center gap-2">
                         <Button variant='destructive' size="sm" onClick={handleBulkDelete}>
-                            <Trash className='h-4 w-4 mr-1' />
+                            <Trash className='h-4 w-4 mr-2' />
                             Delete Selected ({selectedIds.length})
                         </Button>
                     </div>
@@ -211,10 +237,9 @@ export function TransactionTable({ transactions }) {
                     <TableHead className="w-[50px]">
                         <Checkbox onCheckedChange={handleSelectAll}
                         checked={
-                            selectedIds.length ===
-                            filteredAndSortedTransactions.length &&
-                            filteredAndSortedTransactions.length > 0
-                        } />
+                                selectedIds.length === paginatedTransactions.length &&
+                                paginatedTransactions.length > 0
+                            }/>
                     </TableHead>
                     <TableHead className="cursor-pointer" onClick={() => handleSort("date")}>
                         <div className='flex items-center'>Date 
@@ -250,7 +275,7 @@ export function TransactionTable({ transactions }) {
                             </TableCell>
                         </TableRow>
                     ) :  (
-                            filteredAndSortedTransactions.map((transaction) => {
+                            paginatedTransactions.map((transaction) => {
                                 return (
                                     <TableRow key={transaction.id}>
                                         <TableCell>
@@ -336,6 +361,32 @@ export function TransactionTable({ transactions }) {
                 </TableBody>
                 </Table>
             </div>
-    </div>
+
+             {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2">
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="text-sm">
+                    Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    <ChevronRight className="h-4 w-4" />
+                </Button>
+                </div>
+            )}
+            
+        </div>
   )
 }

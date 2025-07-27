@@ -128,3 +128,6 @@ We created an component "use client" to implement it in our dashboard when we ha
 * useMemo takes a callback function and a dependency array. It only runs / re-calculates if the values of dependency array have changed else it will cache the value whatever it was given.
 * `localeCompare` method returns a negative, positive, or zero value based on the lexicographical order of the strings.
 
+14. Implementing charts 
+  install `npm i recharts --legacy-peer-deps` 
+  - using `SimpleBarChart` [recharts.org](https://recharts.org/en-US/examples/SimpleBarChart)

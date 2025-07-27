@@ -124,12 +124,14 @@ export async function bulkDeleteTransactions(transactionIds) {
     // Delete transactions and update account balances in a transaction
     await db.$transaction(async (tx) => {
       // Delete transactions
-      await tx.transaction.deleteMany({
+      const deleted = await tx.transaction.deleteMany({
         where: {
           id: { in: transactionIds },
           userId: user.id,
         },
-      });
+      }
+    );
+    console.log(deleted);
 
       // Update account balances
       for (const [accountId, balanceChange] of Object.entries(
