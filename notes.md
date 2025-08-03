@@ -128,6 +128,35 @@ We created an component "use client" to implement it in our dashboard when we ha
 * useMemo takes a callback function and a dependency array. It only runs / re-calculates if the values of dependency array have changed else it will cache the value whatever it was given.
 * `localeCompare` method returns a negative, positive, or zero value based on the lexicographical order of the strings.
 
-14. Implementing charts 
+14. Implementing charts (AccountCart component) -> `app/(main)/_components/account-chart.jsx`.
   install `npm i recharts --legacy-peer-deps` 
   - using `SimpleBarChart` [recharts.org](https://recharts.org/en-US/examples/SimpleBarChart)
+
+  - In `account-chart.jsx`:
+    - `startOfDay(subDays(now, range.days))` this subtracts range of days selected from today's date, for example, if 30days is selected it will select 30 days from now.
+
+15. Implmenting Budget functionality (Dashboard).
+  - Create `budget.js` in actions folder, this is a "use server" component. 
+  - We need to implement 2 functions here, one to get the current budget of the month and other is to update the budget.
+  - Create `app/(main)/dashboard/_components/budget-progress`.
+
+16. Cron Job for Budget Alert (Inngest Function)
+  - Run `npx inngest-cli@latest dev` in the terminal.
+  - Go to [Inngest Documentation](https://www.inngest.com/docs/getting-started/nextjs-quick-start?ref=docs-home) for the steps.
+  - Create new `app/api/inngest/route.js` and new `lib/inngest/client.js`.
+  - Copy paste the code in both the files from the documentation. (Have to add unique id `welth` in client with a name and `retryFunction` if it fails.)
+  - Run `npm i inngest --legacy-peer-deps`
+  - Create `lib/inngest/functions.js` and copy paste the function from the 4th step of documentation.
+
+  **Creating a Cron Job**
+    - Go to [Cron Expressions](https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm) to understand the expressions used to create it. The cron command-line utility is a job scheduler on Unix-like operating systems. Users who set up and maintain software environments use cron to schedule jobs, also known as cron jobs, to run periodically at fixed times, dates, or intervals.
+    - Ask ChatGPT to generate a cron expression that runs every 6 hours.
+    - Add functions in `lib/inngest/functions.js` to send alerts whenever expenses >= 80% budget.
+
+  **Sending Email Alerts**
+  - Checkout [React Email Docs](https://react.email/docs/introduction).
+  - Run `npm install react-email -D -E --legacy-peer-deps` and `npm install @react-email/components --legacy-peer-deps`
+  - Create a `emails/template.jsx`.
+  - Run `npm run email` to preview the email template.
+  - Checkout [Resend Doc](https://resend.com/), which will be used in sending the emails. Get the api key and store it in .env file.
+  - Create new `actions/send-email.js`.
