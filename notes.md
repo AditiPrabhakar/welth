@@ -160,3 +160,28 @@ We created an component "use client" to implement it in our dashboard when we ha
   - Run `npm run email` to preview the email template.
   - Checkout [Resend Doc](https://resend.com/), which will be used in sending the emails. Get the api key and store it in .env file.
   - Create new `actions/send-email.js`.
+
+  * There is a prisma transaction as well that helps in the concurrent operations i guess. `db.$transaction` 
+
+- after this I added createTransaction functionality which I forgot to write about.
+
+17. AI Receipt Scanner
+  - next.js has a limit when it comes to file(image) sizes, so we increase it to 5mb in `next.config.mjs`.
+  - Go to [Google Gemini API](https://ai.google.dev/).
+  - Install `npm i @google/generative-ai --legacy-peer-deps`.
+  - I'm going to use `gemini-2.5-flash` model.
+  - We then convert file into ArrayBuffer so we can upload it to the model.
+  - Then convert ArrayBuffer to Base64 to provide it to AI models.
+  - Take the result of `model.generateContent` and convert the response of it in a text.
+  - Now this text is something like `/```JSON rjefjnenf JSON```/`, we have to remove the formatting from beginning and ending to get the main content/text.
+
+18. Triggering Recurring transactions
+ - Add a functions `triggerRecurringTransactions` and `processRecurringTransaction` in `lib/inngest/functions`.
+ - Add the functions in the inngest API, `app/api/inngest/route.js`.
+ - Run `npx inngest-cli@latest dev` in the terminal.
+ - Invoke `triggerRecurringTransactions` as other function will get triggered automatically. (Well the function will be invoked automatically at midnight, but we can manually invoke it in inngest at any time.)
+
+* `className={cn(` comes with shadcn ui, helps us to integrate conditions in an element, as if red for expense and green for income.
+* Using `Cell` from `recharts` to display dashboard pie-chart.
+
+- Added Arcject shield and bot protection in `middleware.js` to only allow innjest to work with it.
