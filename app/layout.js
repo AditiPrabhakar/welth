@@ -15,13 +15,14 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${inter.className}`}
-        >
-          {/* header */}
+        <head>
+          <link rel="icon" href="/logo-sm.png" sizes="any" />
+        </head>
+        <body className={`${inter.className}`}>
           <Header />
           <main className="min-h-screen">{children}</main>
           <Toaster richColors />
+
           {/* footer */}
           <footer className="bg-blue-50">
             <div className="container mx-auto text-center text-gray-600">

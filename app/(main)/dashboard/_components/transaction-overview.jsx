@@ -9,13 +9,13 @@ import React, { useState } from 'react'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 const COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#96CEB4",
-  "#FFEEAD",
+  "#EF3E36",
+  "#2E5339",
+  "#7EB2DD",
+  "#9899A6",
+  "#9BC53D",
   "#D4A5A5",
-  "#9FA8DA",
+  "#70163C",
 ];
 
 const DashboardOverview = ({ accounts, transactions }) => {
