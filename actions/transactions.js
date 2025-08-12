@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { request } from "@arcjet/next";
 import aj from "@/lib/arcject";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ajClient } from "@/lib/arcjetClient";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -24,7 +25,7 @@ export async function createTransaction(data) {
     const req = await request();
 
     // Check rate limit
-    const decision = await aj.protect(req, {
+    const decision = await ajClient.protect(req, {
       userId,
       requested: 1, // Specify how many tokens to consume
     });
