@@ -16,7 +16,7 @@ const aj = arcjet({
     detectBot({
       mode: 'LIVE',
       allow: [
-        "CATEGORY:SEARCH_ENGINE", "GO_HTTP", 
+        "CATEGORY:SEARCH_ENGINE", "GO_HTTP",
       ]
     })
   ]
