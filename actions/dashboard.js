@@ -1,6 +1,6 @@
 "use server";
 
-import { ajClient } from "@/lib/arcjetClient";
+import aj from "@/lib/arcjet";
 import { db } from "@/lib/prisma";
 import { request } from "@arcjet/next";
 import { auth } from "@clerk/nextjs/server";
@@ -60,7 +60,7 @@ export async function createAccount(data) {
     const req = await request();
 
     // Check rate limit
-    const decision = await ajClient.protect(req, {
+    const decision = await aj.protect(req, {
       userId,
       requested: 1, // Specify how many tokens to consume
     });

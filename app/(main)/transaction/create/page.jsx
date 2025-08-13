@@ -4,14 +4,15 @@ import { AddTransactionForm } from "../_components/transaction-form";
 import { getTransaction } from "@/actions/transactions";
 
 export default async function AddTransactionPage({ searchParams }) {
-  const accounts = await getUserAccounts();
-  const editId = searchParams?.edit;
+    const params = await searchParams; 
+    const accounts = await getUserAccounts();
+    const editId = params?.edit;
 
-  let initialData = null;
-  if (editId) {
-    const transaction = await getTransaction(editId);
-    initialData = transaction;
-  }
+    let initialData = null;
+    if (editId) {
+      const transaction = await getTransaction(editId);
+      initialData = transaction;
+    }
 
   return (
     <div className="max-w-3xl mx-auto px-5">
