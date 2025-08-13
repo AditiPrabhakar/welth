@@ -1,6 +1,5 @@
 "use server";
 
-import aj from "@/lib/arcject";
 import { ajClient } from "@/lib/arcjetClient";
 import { db } from "@/lib/prisma";
 import { request } from "@arcjet/next";
