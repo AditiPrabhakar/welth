@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welth: Your Smart Financial Companion
 
-## Getting Started
+Welth is a comprehensive personal finance tracking application designed to simplify your financial management.  
+Track your expenses, monitor budgets, and gain valuable insights with the help of AI-powered tools.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features ✨
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🔐 Secure Authentication
+- Powered by **Clerk** for a seamless and secure login experience.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 🏠 Intuitive Landing Page
+- A clean, modern landing page that showcases Welth's **core features** and **user testimonials**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 📊 Interactive Dashboard
+- **Budget Tracking** – Visualize your budget progress with an interactive **bar chart**.
+- **Expense Alerts** – Receive **email notifications** if expenses exceed **80%** of your allocated budget.
+- **Expense Breakdown** – Get a **pie chart** view of your recent spending categories.
+- **Recent Transactions** – Quickly review financial activities with a concise transaction list.
+- **Multi-Account Management** – Add and manage multiple accounts, setting one as **default** for budget tracking and expense analysis.
 
-## Learn More
+### 📜 Comprehensive Transaction History
+- **View All Transactions** – Access a complete record of your transactions.
+- **Search & Filter** – Find specific transactions by **date, category, or amount**.
+- **Visual Representation** – Bar chart to represent **expenses** vs. **income** over time.
 
-To learn more about Next.js, take a look at the following resources:
+### 📝 Streamlined Transaction Entry
+- **Manual Entry** – Add transactions manually and categorize them.
+- **AI Receipt Scanner** – Scan physical receipts and let AI **auto-fill** transaction details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📅 Monthly Financial Reports & AI Insights
+- Receive **monthly email reports** summarizing expenses, tracking performance,  
+  and offering **personalized AI-driven financial insights**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Media & Demos
+### Landing Page & Dashboard
+![Landing Page Demo](media/landing_page.gif)
 
-## Deploy on Vercel
+### Adding An Account
+![Account Demo](media/create_account.gif)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Transactions Demo
+![Transactions Demo](media/account_transactions.gif)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Create Transaction
+![Create Transaction Demo](media/create_transaction.gif)
+
+### AI Receipt Scan
+![Receipt Scan Demo](media/receipt_scan.gif)
+
+### Monthly Budget Track & AI Insights
+![Monthly Emails](media/monthly_emails.gif)
+
+---
+
+## 🛠 Technologies Used
+
+**Frontend**
+- [Next.js 15](https://nextjs.org/) – App Router, Server Components
+- [React 19](https://react.dev/) – Modern React features
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first styling
+
+**Backend & Services**
+- [Supabase](https://supabase.com/) – PostgreSQL Database
+- [Prisma](https://www.prisma.io/) – ORM for database management
+- [Clerk](https://clerk.com/) – Authentication
+- [Inngest](https://www.inngest.com/) – Event-driven architecture (email alerts, reports)
+- [Arcjet](https://arcjet.com/) – Real-time data streaming & AI features
+
+---
